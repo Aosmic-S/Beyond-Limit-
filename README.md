@@ -1,7 +1,7 @@
 🚀 Beyond Limit
 
 <p align="center">
-  <img src="assets/logo.png" alt="Beyond Limit Logo" width="180"/>
+  <img src="https://github.com/Aosmic-S/Beyond-Limit-/blob/main/file_00000000c82c7208ad3bf4bc66e85d2d.png" alt="Beyond Limit Logo" width="180"/>
 </p><p align="center">
   <strong>An AI-powered productivity and study companion built to eliminate distractions, maximize focus, and help students achieve their full potential.</strong>
 </p><p align="center">
