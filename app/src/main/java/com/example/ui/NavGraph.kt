@@ -28,6 +28,7 @@ import com.example.ui.screens.FocusModeScreen
 import com.example.ui.screens.LibraryScreen
 import com.example.ui.screens.OnboardingScreen
 import com.example.ui.screens.PlannerScreen
+import com.example.ui.screens.SettingsScreen
 
 @Composable
 fun UltraInstinctApp(viewModel: MainViewModel) {
@@ -42,7 +43,7 @@ fun UltraInstinctApp(viewModel: MainViewModel) {
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != "focus" && currentRoute != "onboarding") {
+            if (currentRoute != "focus" && currentRoute != "onboarding" && currentRoute != "settings") {
                 NavigationBar {
                     NavigationBarItem(
                         selected = currentRoute == "dashboard",
@@ -94,7 +95,8 @@ fun UltraInstinctApp(viewModel: MainViewModel) {
             composable("dashboard") {
                 DashboardScreen(
                     viewModel = viewModel,
-                    onNavigateToFocus = { navController.navigate("focus") }
+                    onNavigateToFocus = { navController.navigate("focus") },
+                    onNavigateToSettings = { navController.navigate("settings") }
                 )
             }
             composable("planner") {
@@ -111,6 +113,12 @@ fun UltraInstinctApp(viewModel: MainViewModel) {
             }
             composable("assistant") {
                 AIAssistantScreen(viewModel)
+            }
+            composable("settings") {
+                SettingsScreen(
+                    viewModel = viewModel,
+                    onNavigateBack = { navController.popBackStack() }
+                )
             }
         }
     }

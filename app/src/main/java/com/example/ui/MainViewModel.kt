@@ -29,6 +29,14 @@ class MainViewModel(
     private val userPreferencesRepo: UserPreferencesRepo
 ) : ViewModel() {
 
+    data class VaultItem(
+        val id: String,
+        val title: String,
+        val subtitle: String,
+        val isFolder: Boolean,
+        val iconType: String
+    )
+
     val userName: StateFlow<String?> = userPreferencesRepo.userNameFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
         
@@ -149,6 +157,32 @@ class MainViewModel(
     val isFocusModeActive = _isFocusModeActive.asStateFlow()
 
     val currentDate = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault()).format(Date())
+
+    // --- Vault State ---
+    private val _vaultItems = MutableStateFlow<List<VaultItem>>(
+        listOf(
+            VaultItem("1", "Neural Architecture", "7.2 MB", false, "pdf"),
+            VaultItem("2", "Quantum Dynamics", "12 MB", false, "doc"),
+            VaultItem("3", "Psychology 101", "0 items", true, "folder"),
+            VaultItem("4", "Calculus III", "0 items", true, "folder")
+        )
+    )
+    val vaultItems: StateFlow<List<VaultItem>> = _vaultItems.asStateFlow()
+
+    fun addVaultFolder(name: String) {
+        val newItem = VaultItem(java.util.UUID.randomUUID().toString(), name, "0 items", true, "folder")
+        _vaultItems.value = _vaultItems.value + newItem
+    }
+
+    fun importVaultMaterial(name: String, format: String) {
+        val iconType = if (format.equals("pdf", ignoreCase = true)) "pdf" else "doc"
+        val newItem = VaultItem(java.util.UUID.randomUUID().toString(), name, "1.4 MB", false, iconType)
+        _vaultItems.value = _vaultItems.value + newItem
+    }
+
+    fun deleteVaultItem(id: String) {
+        _vaultItems.value = _vaultItems.value.filter { it.id != id }
+    }
 
     // --- Task Actions ---
     fun addTask(title: String, category: String = "Study") {

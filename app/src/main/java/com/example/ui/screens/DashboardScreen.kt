@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
@@ -37,7 +38,8 @@ import com.example.ui.MainViewModel
 @Composable
 fun DashboardScreen(
     viewModel: MainViewModel,
-    onNavigateToFocus: () -> Unit
+    onNavigateToFocus: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
     val tasks by viewModel.tasks.collectAsStateWithLifecycle()
     val focusTimeActive by viewModel.isFocusModeActive.collectAsStateWithLifecycle()
@@ -90,17 +92,32 @@ fun DashboardScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             item {
-                Text(
-                    text = "${viewModel.currentDate.uppercase()} • $currentTimeStr",
-                    style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 2.sp),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = greeting,
-                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "${viewModel.currentDate.uppercase()} • $currentTimeStr",
+                            style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 2.sp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = greeting,
+                            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "System functions nominal. Awaiting directives.",
