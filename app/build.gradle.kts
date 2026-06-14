@@ -60,9 +60,19 @@ android {
 
 tasks.register<Copy>("copyApkToRoot") {
     dependsOn("assembleDebug")
-    from("build/outputs/apk/debug")
-    into("../.build-output")
+    from(layout.buildDirectory.dir("outputs/apk/debug"))
+    into(file("../.build-output"))
     include("app-debug.apk")
+    
+    // Also copy to .build-outputs as a secondary option for the launcher
+    doLast {
+        val destFile = file("../.build-output/app-debug.apk")
+        val secondaryDest = file("../.build-outputs/app-debug.apk")
+        if (destFile.exists()) {
+            secondaryDest.parentFile.mkdirs()
+            destFile.copyTo(secondaryDest, overwrite = true)
+        }
+    }
 }
 
 // Configure the Secrets Gradle Plugin to use .env and .env.example files
