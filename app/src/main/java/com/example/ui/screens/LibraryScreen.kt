@@ -44,12 +44,12 @@ fun LibraryScreen(viewModel: com.example.ui.MainViewModel) {
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "System Admin",
+                text = "Knowledge Vault",
                 style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Configuration & Configurations",
+                text = "Your personal offline dataset",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

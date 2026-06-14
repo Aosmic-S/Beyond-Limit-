@@ -58,6 +58,14 @@ android {
   testOptions { unitTests { isIncludeAndroidResources = true } }
 }
 
+tasks.register<Copy>("copyApkToRoot") {
+    dependsOn("assembleDebug")
+    from("build/outputs/apk/debug")
+    into("../.build-outputs")
+    include("app-debug.apk")
+    rename("app-debug.apk", "BeyondLimit.apk")
+}
+
 // Configure the Secrets Gradle Plugin to use .env and .env.example files
 // to match the convention used in Web projects.
 secrets {
