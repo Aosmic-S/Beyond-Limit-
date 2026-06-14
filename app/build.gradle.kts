@@ -61,7 +61,7 @@ android {
 tasks.register<Copy>("copyApkToRoot") {
     dependsOn("assembleDebug")
     from("build/outputs/apk/debug")
-    into("../.build-outputs")
+    into("../apk_releases")
     include("app-debug.apk")
     rename("app-debug.apk", "BeyondLimit.apk")
 }
