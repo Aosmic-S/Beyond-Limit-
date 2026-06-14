@@ -24,6 +24,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Calendar
 import com.example.data.Task
 import com.example.ui.MainViewModel
 
@@ -37,6 +43,23 @@ fun DashboardScreen(
     val focusTimeActive by viewModel.isFocusModeActive.collectAsStateWithLifecycle()
     val focusTimeRemaining by viewModel.focusTimeRemaining.collectAsStateWithLifecycle()
     val userName by viewModel.userName.collectAsStateWithLifecycle()
+
+    var currentTimeStr by remember { mutableStateOf(SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())) }
+    var greeting by remember { mutableStateOf("Good day") }
+    
+    LaunchedEffect(userName) {
+        while(true) {
+            currentTimeStr = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
+            val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val nameStr = userName ?: "Sir"
+            greeting = when (hour) {
+                in 0..11 -> "Good morning, $nameStr."
+                in 12..17 -> "Good afternoon, $nameStr."
+                else -> "Good evening, $nameStr."
+            }
+            delay(1000)
+        }
+    }
 
     var showAddTaskDialog by remember { mutableStateOf(false) }
     var newTaskTitle by remember { mutableStateOf("") }
@@ -67,17 +90,22 @@ fun DashboardScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             item {
-                val name = userName ?: "Student"
                 Text(
-                    text = viewModel.currentDate.uppercase(),
+                    text = "${viewModel.currentDate.uppercase()} • $currentTimeStr",
                     style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 2.sp),
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Welcome, $name",
-                    style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
+                    text = greeting,
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onBackground
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "System functions nominal. Awaiting directives.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
